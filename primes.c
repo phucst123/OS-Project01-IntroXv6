@@ -19,6 +19,7 @@ void child_process(int p[2]) {
   if (fork() == 0)
     child_process(new_p);
   else {
+    close(new_p[0]);
     int n;
     while (read(p[0], &n, sizeof(int))) {
       if (n % prime != 0)
@@ -42,6 +43,5 @@ int main(int argc, char *argv[]) {
     }
     close(p[1]);
   }
-  wait(0);
   exit(0);
 }
