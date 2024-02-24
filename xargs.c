@@ -15,7 +15,6 @@ int main(int argc, char *argv[]) {
   int offset = 0;
   int flag = 0;
 
-
   int i;
   for (i = 0; i < argc - 1; ++i) {
     params[i] = argv[i+1];
@@ -26,17 +25,12 @@ int main(int argc, char *argv[]) {
     if (c == '\n') {
         params[i] = buf;
         
-        int pid = fork();
-        if (pid < 0) {
-            exit(1);
-        }
-        else if (pid == 0) {
-            exec(params[0], params);
+        if (fork() == 0)  {
+          exec(params[0], params);
         }
         else {
-            wait(0);
+          wait(0);
         }
-
         memset(buf, 0, sizeof(buf));
         offset = 0;
     }
@@ -44,8 +38,6 @@ int main(int argc, char *argv[]) {
         buf[offset] = c;
         ++offset;
     }
-      
   }
   exit(0);
-
 }
